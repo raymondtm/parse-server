@@ -453,6 +453,45 @@ export class UsersRouter extends ClassesRouter {
     });
   }
 
+  handleVerifyEmail(req) {
+    const { username, token: rawToken } = req.query;
+    const token = rawToken && typeof rawToken !== 'string' ? rawToken.toString() : rawToken;
+
+    if (!username) {
+      throw new Parse.Error(Parse.Error.USERNAME_MISSING, 'Missing username');
+    }
+
+    if (!token) {
+      throw new Parse.Error(Parse.Error.OTHER_CAUSE, 'Missing token');
+    }
+
+    const userController = req.config.userController;
+    return userController.verifyEmail(username, token).then(() => {
+      return { response: {} };
+    });
+  }
+
+  handleResetPassword(req) {
+    const { username, new_password, token: rawToken } = req.body;
+    const token = rawToken && typeof rawToken !== 'string' ? rawToken.toString() : rawToken;
+
+    if (!username) {
+      throw new Parse.Error(Parse.Error.USERNAME_MISSING, 'Missing username');
+    }
+
+    if (!token) {
+      throw new Parse.Error(Parse.Error.OTHER_CAUSE, 'Missing token');
+    }
+
+    if (!new_password) {
+      throw new Parse.Error(Parse.Error.PASSWORD_MISSING, 'Missing password');
+    }
+
+    return req.config.userController.updatePassword(username, token, new_password).then(() => {
+      return { response: {} };
+    });
+  }
+
   mountRoutes() {
     this.route('GET', '/users', req => {
       return this.handleFind(req);
@@ -492,6 +531,13 @@ export class UsersRouter extends ClassesRouter {
     });
     this.route('GET', '/verifyPassword', req => {
       return this.handleVerifyPassword(req);
+    });
+
+    this.route('POST', '/verifyEmail', req => {
+      return this.handleVerifyEmail(req);
+    });
+    this.route('POST', '/resetPassword', req => {
+      return this.handleResetPassword(req);
     });
   }
 }

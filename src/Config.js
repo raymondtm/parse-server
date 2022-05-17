@@ -532,7 +532,10 @@ export class Config {
   }
 
   get requestResetPasswordURL() {
-    return `${this.publicServerURL}/${this.pagesEndpoint}/${this.applicationId}/request_password_reset`;
+    return (
+      this.customPages.resetPasswordLink ||
+      `${this.publicServerURL}/${this.pagesEndpoint}/${this.applicationId}/request_password_reset`
+    );
   }
 
   get passwordResetSuccessURL() {
@@ -547,7 +550,10 @@ export class Config {
   }
 
   get verifyEmailURL() {
-    return `${this.publicServerURL}/${this.pagesEndpoint}/${this.applicationId}/verify_email`;
+    return (
+      this.customPages.verifyEmailLink ||
+      `${this.publicServerURL}/${this.pagesEndpoint}/${this.applicationId}/verify_email`
+    );
   }
 
   // TODO: Remove this function once PagesRouter replaces the PublicAPIRouter;
