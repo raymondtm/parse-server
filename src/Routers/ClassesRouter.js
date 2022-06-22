@@ -3,6 +3,7 @@ import rest from '../rest';
 import _ from 'lodash';
 import Parse from 'parse/node';
 import { promiseEnsureIdempotency } from '../middlewares';
+import { FunctionsRouter } from './FunctionsRouter';
 
 const ALLOWED_GET_QUERY_KEYS = [
   'keys',
@@ -233,6 +234,12 @@ export class ClassesRouter extends PromiseRouter {
     });
     this.route('DELETE', '/classes/:className/:objectId', req => {
       return this.handleDelete(req);
+    });
+
+    // NOTE: An alias of cloud function
+    this.route('POST', '/classes/:className/:functionName', promiseEnsureIdempotency, req => {
+      req.params.functionName = `${req.params.className}.${req.params.functionName}`;
+      return FunctionsRouter.handleCloudFunction(req);
     });
   }
 }

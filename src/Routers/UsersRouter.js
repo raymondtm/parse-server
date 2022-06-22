@@ -10,6 +10,7 @@ import passwordCrypto from '../password';
 import { maybeRunTrigger, Types as TriggerTypes } from '../triggers';
 import { promiseEnsureIdempotency } from '../middlewares';
 import RestWrite from '../RestWrite';
+import { FunctionsRouter } from './FunctionsRouter';
 
 export class UsersRouter extends ClassesRouter {
   className() {
@@ -538,6 +539,11 @@ export class UsersRouter extends ClassesRouter {
     });
     this.route('POST', '/resetPassword', req => {
       return this.handleResetPassword(req);
+    });
+    // NOTE: An alias of cloud function
+    this.route('POST', '/users/:functionName', req => {
+      req.params.functionName = `${this.className()}.${req.params.functionName}`;
+      return FunctionsRouter.handleCloudFunction(req);
     });
   }
 }

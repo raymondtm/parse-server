@@ -1,4 +1,5 @@
 import ClassesRouter from './ClassesRouter';
+import { FunctionsRouter } from './FunctionsRouter';
 
 export class RolesRouter extends ClassesRouter {
   className() {
@@ -20,6 +21,12 @@ export class RolesRouter extends ClassesRouter {
     });
     this.route('DELETE', '/roles/:objectId', req => {
       return this.handleDelete(req);
+    });
+
+    // NOTE: An alias of cloud function
+    this.route('POST', '/roles/:functionName', req => {
+      req.params.functionName = `${this.className()}.${req.params.functionName}`;
+      return FunctionsRouter.handleCloudFunction(req);
     });
   }
 }
