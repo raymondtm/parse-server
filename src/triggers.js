@@ -624,8 +624,14 @@ export function resolveError(message, defaultOpts) {
   }
   return error;
 }
-export function maybeRunValidator(request, functionName, auth) {
-  const theValidator = getValidator(functionName, Parse.applicationId);
+export function maybeRunValidator(request, validator, auth) {
+  let theValidator;
+  if (typeof validator === 'string') {
+    theValidator = getValidator(validator, Parse.applicationId);
+  } else if (typeof validator === 'object') {
+    theValidator = validator;
+  }
+
   if (!theValidator) {
     return;
   }
