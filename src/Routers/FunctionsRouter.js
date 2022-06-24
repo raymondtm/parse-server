@@ -131,6 +131,7 @@ export class FunctionsRouter extends PromiseRouter {
       ip: req.config.ip,
       functionName,
       context: req.info.context,
+      auth: req.auth,
     };
 
     return new Promise(function (resolve, reject) {

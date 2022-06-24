@@ -211,7 +211,7 @@ export function getFileTrigger(type, applicationId) {
   return getTrigger(FileClassName, type, applicationId);
 }
 
-export function triggerExists(className: string, type: string, applicationId: string): boolean {
+export function triggerExists(className, type, applicationId) {
   return getTrigger(className, type, applicationId) != undefined;
 }
 
@@ -271,6 +271,7 @@ export function getRequestObject(
     log: config.loggerController,
     headers: config.headers,
     ip: config.ip,
+    auth,
   };
 
   if (originalParseObject) {
