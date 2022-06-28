@@ -238,7 +238,6 @@ export class ClassesRouter extends PromiseRouter {
 
     // NOTE: An alias of cloud function
     this.route('POST', '/classes/:className/:functionName', promiseEnsureIdempotency, req => {
-      req.params.functionName = `${req.params.className}.${req.params.functionName}`;
       return FunctionsRouter.handleCloudFunction(req);
     });
   }
