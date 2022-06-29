@@ -316,6 +316,7 @@ export function getRequestQueryObject(triggerType, auth, query, count, config, c
     headers: config.headers,
     ip: config.ip,
     context: context || {},
+    auth,
   };
 
   if (!auth) {
@@ -950,6 +951,7 @@ export function getRequestFileObject(triggerType, auth, fileObject, config) {
     log: config.loggerController,
     headers: config.headers,
     ip: config.ip,
+    auth,
   };
 
   if (!auth) {
