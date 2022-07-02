@@ -5,6 +5,8 @@ import Parse from 'parse/node';
 import Config from '../Config';
 import mime from 'mime';
 import logger from '../logger';
+import { FunctionsRouter } from './FunctionsRouter';
+
 const triggers = require('../triggers');
 const http = require('http');
 
@@ -60,6 +62,21 @@ export class FilesRouter {
       Middlewares.handleParseHeaders,
       Middlewares.enforceMasterKeyAccess,
       this.deleteHandler
+    );
+
+    router.post(
+      '/files/:filename/:functionName',
+      BodyParser.raw({
+        type: () => {
+          return true;
+        },
+        limit: maxUploadSize,
+      }), // Allow uploads without Content-Type, or with any Content-Type.
+      Middlewares.handleParseHeaders,
+      req => {
+        req.params.className = '@File';
+        return FunctionsRouter.handleCloudFunction(req);
+      }
     );
     return router;
   }

@@ -25,6 +25,7 @@ export class RolesRouter extends ClassesRouter {
 
     // NOTE: An alias of cloud function
     this.route('POST', '/roles/:functionName', req => {
+      req.params.className = this.className();
       return FunctionsRouter.handleCloudFunction(req);
     });
   }

@@ -542,6 +542,7 @@ export class UsersRouter extends ClassesRouter {
     });
     // NOTE: An alias of cloud function
     this.route('POST', '/users/:functionName', req => {
+      req.params.className = this.className();
       return FunctionsRouter.handleCloudFunction(req);
     });
   }
